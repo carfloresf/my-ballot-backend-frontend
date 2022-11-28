@@ -1,0 +1,94 @@
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">My ballot example</h1>
+  <div class="col-lg-6 mx-auto">
+    <div *ngIf="!wallet" class="col-lg-6 mx-auto">
+      <p>
+        To use this ballot you need to connect a wallet</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-between">
+        <button (click)="createWallet()" type="button" class="btn btn-info btn-lg px-4 gap-3">Create Wallet</button>
+        <input name="privatekey" #privateKey type="text" class="form-control"
+        placeholder="Enter private key">
+        <button (click)="connectWallet(privateKey.value)" type="button" class="btn btn-info btn-lg px-4 gap-3">Connect Wallet</button>
+       <!--<button type="button" class="btn btn-danger btn-lg px-4 gap-3">Import Wallet</button>--> 
+      </div>
+    </div>
+  </div>
+  <div *ngIf="wallet" class="col-lg-6 mx-auto">
+    <p>
+      You are connected to the wallet
+      {{ wallet.address }}</p>
+    <p>
+      This application uses the token at the address
+      {{ tokenAddress }}</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <div class="card">
+        <div class="card-body">My ether balance is:
+          {{ etherBalance }}</div>
+      </div>
+      <div class="card">
+        <div class="card-body">My token balance is:
+          {{ tokenBalance}}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">My voting power is:
+          {{votePower}}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+    <p class="my-4">Claim your tokens here and self delegate them:</p>
+      <div *ngIf="!claimedTokens">
+        <button (click)="claimTokens()" type="button" class="btn btn-danger btn-lg px-4 gap-3">Claim Tokens</button>
+        <button (click)="selfDelegate()" type="button" class="btn btn-danger btn-lg px-4 gap-3">selfDelegate</button>
+        <div *ngIf="selfDelegated" class="col-lg-6 mx-auto">
+          <p>
+            Self delegated tokens</p>
+            </div>
+      </div>
+    </div>
+    <p></p>
+    <div>
+    <div *ngIf="!ballotContract" class="d-grid d-sm-flex justify-content-sm-center">
+      <p class="my-4">Connect tokens to ballot:</p>
+      <input name="ballotaddress" id="ballotaddress" #ballotaddress type="text" class="form-control"
+        placeholder="Enter ballot contract address">
+      <button (click)="connectBallot(ballotaddress.value)" type="button"
+        class="btn btn-danger btn-lg px-4 gap-3">Connect Ballot</button>
+    </div>
+    <div  class="d-grid d-sm-flex justify-content-sm-center" >
+      <p class="my-4">Delegate tokens:</p>
+      <input name="delegate" id="delegate" #delegateAddress type="text" class="form-control"
+        placeholder="Enter delegate address">
+      <button (click)="delegate(delegateAddress.value)" type="button"
+        class="btn btn-danger btn-lg px-4 gap-3">delegate</button>
+    </div>
+    <div *ngIf="ballotContract">
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <div class="card">
+          <div class="card-body">Option 0:
+            {{ proposals[0] }}</div>
+        </div>
+        <div class="card">
+          <div class="card-body">Option 1:
+            {{ proposals[1]}}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">Option 2:
+            {{proposals[2]}}
+          </div>
+        </div>
+      </div>
+        <input name="proposal" #proposal type="text" class="form-control"
+        placeholder="Enter proposal index">
+        <input name="numberVotes" #numberOfVotes type="text" class="form-control"
+        placeholder="Enter number of votes">
+      <button (click)="castVote(proposal.value,numberOfVotes.value)" type="button"
+        class="btn btn-danger btn-lg px-4 gap-3">vote</button>
+    </div>
+    </div>
+  </div>
+  
+</div>
