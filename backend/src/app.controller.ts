@@ -29,11 +29,4 @@ export class DeployBallotDto {
     deployBallot(@Body() body: DeployBallotDto) {
         return this.appService.deployBallot(body.address);
     }
-
-    /*
-    @Post('delegate')
-    delegateAddress(@Body() body: ClaimTokensDto) {
-        return this.appService.delegateAddress(body.address);
-    }   
-    */
 }

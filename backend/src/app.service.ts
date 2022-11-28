@@ -34,19 +34,19 @@ const PROPOSALS = ["Mexico", "Argentina", "Brasil"];
 
         return {result: voterTokenBalance.toString()};
     }
-    
+
 
     async deployBallot(address : string) {
         let ballotContractFactory = new ethers.ContractFactory(ballotJson.abi, ballotJson.bytecode, this.voter);
         const latestBlock = await this.provider.getBlock("latest")
-        let ballotContract = await ballotContractFactory.deploy(convertStringArrayToBytes32(PROPOSALS),address, latestBlock.number + 100);
+        let ballotContract = await ballotContractFactory.deploy(convertStringArrayToBytes32(PROPOSALS), address, latestBlock.number + 100);
         await ballotContract.deployed();
         console.log("Ballot deployed to:", ballotContract.address);
-    
+
     }
 }
 
-function convertStringArrayToBytes32(array: string[]) {
+function convertStringArrayToBytes32(array : string[]) {
     const bytes32Array = [];
     for (let index = 0; index < array.length; index++) {
         bytes32Array.push(ethers.utils.formatBytes32String(array[index]));

@@ -14,28 +14,22 @@
     </div>
   </div>
   <div *ngIf="wallet" class="col-lg-6 mx-auto">
-    <p>
-      You are connected to the wallet
-      {{ wallet.address }}</p>
-    <p>
-      This application uses the token at the address
-      {{ tokenAddress }}</p>
+    <p>You are connected to the wallet: {{ wallet.address }}</p>
+    <p>This application uses the token at the address: {{ tokenAddress }}</p>
+    <p *ngIf="ballotAddress">Ballot Contract Address: {{ ballotAddress }}</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
       <div class="card">
-        <div class="card-body">My ether balance is:
-          {{ etherBalance }}</div>
+        <div class="card-body">My ether balance is: {{ etherBalance }}</div>
       </div>
       <div class="card">
-        <div class="card-body">My token balance is:
-          {{ tokenBalance}}
+        <div class="card-body">My token balance is: {{ tokenBalance}}
         </div>
       </div>
       <div class="card">
-        <div class="card-body">My voting power is:
-          {{votePower}}
+        <div class="card-body">My voting power is:  {{votePower}}
         </div>
       </div>
-    </div>
+  </div>
 
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
     <p class="my-4">Claim your tokens here and self delegate them:</p>
@@ -52,9 +46,9 @@
     <div>
     <div *ngIf="!ballotContract" class="d-grid d-sm-flex justify-content-sm-center">
       <p class="my-4">Connect tokens to ballot:</p>
-      <input name="ballotaddress" id="ballotaddress" #ballotaddress type="text" class="form-control"
+      <input name="ballotAddress" id="ballotAddress" #ballotAddress type="text" class="form-control"
         placeholder="Enter ballot contract address">
-      <button (click)="connectBallot(ballotaddress.value)" type="button"
+      <button (click)="connectBallot(ballotAddress.value)" type="button"
         class="btn btn-danger btn-lg px-4 gap-3">Connect Ballot</button>
     </div>
     <div  class="d-grid d-sm-flex justify-content-sm-center" >
