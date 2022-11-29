@@ -18,9 +18,13 @@ export class AppComponent {
     proposals : string[] = [];
     selfDelegated : boolean | undefined;
     ballotAddress : string | undefined;
+    winnerName: string | undefined;
+    winningIndex: string | undefined;
+    targetBlock: string | undefined;
 
     ballotConnected = false;
     delegated = false;
+    voted = false;
 
 
     constructor(private http : HttpClient) {
@@ -84,7 +88,7 @@ export class AppComponent {
     }
 
     connectBallot(ballotAddress : string) {
-
+        this.ballotAddress = ballotAddress;
         this.ballotContract = new ethers.Contract(ballotAddress, ballotJson.abi, this.wallet);
         this.ballotContract !["proposals"](0).then((info0 : any) => {
             console.log(ethers.utils.parseBytes32String(info0[0].toString()));
@@ -100,25 +104,19 @@ export class AppComponent {
             this.proposals.push(ethers.utils.parseBytes32String(info2[0].toString()));
         });
 
+        this.getBallotInformation()
         this.ballotConnected = true;
     }
 
     delegate(to : string) {
-        if (to.toLowerCase() == 'self') 
-            to == this.wallet ?. address;
-        
-
-
         try {
             if (this.tokenContract) 
                 this.tokenContract['delegate'](to).then((ans : any) => {
                     console.log(ans);
                     return {result: 'success'};
                 });
-            
-
             this.delegated = true;
-            // this.getBallotInfo();
+            this.getBallotInformation();
             this.getBalances();
             !this.delegated;
         } catch (error) {
@@ -126,13 +124,33 @@ export class AppComponent {
         }
     }
 
+    private getBallotInformation() {
+        if (this.ballotContract) {
+          this.ballotContract['winnerName']().then((name: ethers.BigNumberish) => {
+            this.winnerName = ethers.utils.parseBytes32String(name.toString());
+          });
+          this.ballotContract['winningProposal']().then(
+            (index: ethers.BigNumberish) => {
+              this.winningIndex = index.toString();
+            }
+          );
+          this.ballotContract['targetBlock']().then((num: ethers.BigNumberish) => {
+            this.targetBlock = num.toString();
+          });
+        }
+      }
+
     castVote(proposal : string, numberOfVotes : string) {
         console.log("vote for proposal: " + proposal + " with " + numberOfVotes + " votes");
         try {
-            this.ballotContract !["vote"](proposal, ethers.utils.parseEther(numberOfVotes), {gasLimit: 1000000}).then((info : any) => {
-                console.log(info);
+            if (this.ballotContract)
+            this.ballotContract["vote"](proposal, ethers.utils.parseEther(numberOfVotes), {gasLimit: 1000000}).then((res : any) => {
+                console.log(res);
+                return { result: 'success' };
             });
+            this.getBallotInformation()
             this.getBalances();
+            !this.voted;
         } catch (error) {
             alert(error);
         }
